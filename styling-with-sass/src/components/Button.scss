@@ -1,4 +1,25 @@
 $blue: #228be6; //주석 선언
+$pink: #f06595;
+$gray: #495057;
+
+@mixin button-color($color) {
+    background-color: $color;
+    &:hover {
+        background: lighten($color, 10%);
+    }
+    &:active{
+        background: darken($color, 10%);
+    }
+    &.outline{
+        color: $color;
+        background: none;
+        border: 1px solid $color;
+        &:hover {
+            background: $color;
+            color:white;
+        }
+    }
+}
 
 .Button{
     display: inline-flex;
@@ -28,12 +49,29 @@ $blue: #228be6; //주석 선언
         font-size: 1rem;
     }
 
-    background: $blue; //주석사용
-    & :hover{ 
-        background: lighten($blue, 10%);
+   // 색상 관리
+    &.blue{
+        @include button-color($blue);
     }
 
-    & :active{
-        background: darken($blue, 10%);
+    &.gray{
+        @include button-color($gray);
+    }
+
+    &.pink{
+        @include button-color($pink);
+    }
+
+    &.fullWidth {
+        width: 100%;
+        justify-content: center;
+        & + & {
+          margin-left: 0;
+          margin-top: 1rem;
+        }
+    }
+
+    & + & {
+        margin-left: 1rem;
     }
 }
