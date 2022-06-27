@@ -1,27 +1,8 @@
-import React, { useReducer, createContext, useContext, useRef } from 'react';
+import React, { createContext, useReducer, useContext, useRef } from 'react';
 
-const initialTodos = [
-  {
-    id: 1,
-    text: '프로젝트 생성하기',
-    done: true
-  },
-  {
-    id: 2,
-    text: '컴포넌트 스타일링하기',
-    done: true
-  },
-  {
-    id: 3,
-    text: 'Context 만들기',
-    done: false
-  },
-  {
-    id: 4,
-    text: '기능 구현하기',
-    done: false
-  }
-];
+const TodoStateContext = createContext(null);
+const TodoDispatchContext = createContext(null);
+const TodoNextIdContext = createContext(null);
 
 function todoReducer(state, action) {
   switch (action.type) {
@@ -34,13 +15,24 @@ function todoReducer(state, action) {
     case 'REMOVE':
       return state.filter(todo => todo.id !== action.id);
     default:
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return state;
   }
 }
 
-const TodoStateContext = createContext();
-const TodoDispatchContext = createContext();
-const TodoNextIdContext = createContext();
+const initialTodos = [
+  {
+    id: 1,
+    text: '아침 산책',
+    done: true
+  },
+  {
+    id: 2,
+    text: '오늘의 뉴스 읽기',
+    done: true
+  },
+  { id: 3, text: '샌드위치 사 먹기', done: false },
+  { id: 4, text: '리액트 공부하기', done: false }
+];
 
 export function TodoProvider({ children }) {
   const [state, dispatch] = useReducer(todoReducer, initialTodos);
@@ -58,25 +50,13 @@ export function TodoProvider({ children }) {
 }
 
 export function useTodoState() {
-  const context = useContext(TodoStateContext);
-  if (!context) {
-    throw new Error('Cannot find TodoProvider');
-  }
-  return context;
+  return useContext(TodoStateContext);
 }
 
 export function useTodoDispatch() {
-  const context = useContext(TodoDispatchContext);
-  if (!context) {
-    throw new Error('Cannot find TodoProvider');
-  }
-  return context;
+  return useContext(TodoDispatchContext);
 }
 
 export function useTodoNextId() {
-  const context = useContext(TodoNextIdContext);
-  if (!context) {
-    throw new Error('Cannot find TodoProvider');
-  }
-  return context;
+  return useContext(TodoNextIdContext);
 }
